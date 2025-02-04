@@ -1,6 +1,7 @@
 import { createClient } from '@/utils/supabase/server';
 import { Table } from "./components/table";
 import { Team } from "./types";
+import { FixtureList } from './components/FixtureList';
 
 export default async function Home() {
   const supabase = await createClient();
@@ -20,17 +21,13 @@ export default async function Home() {
           {teams?.length && <Table teams={teams} />}
         </div>
 
-        <div className="px-10">
-          <h1 className="text-2xl font-medium py-6">Upcoming Fixtures</h1>
-          {/* {teams?.length && <Table teams={teams} />} */}
-          {fixtures?.length && fixtures.map((fixture) => (
-            <div key={fixture.id} className="flex justify-between py-2">
-              <p>{fixture.team_1.team_name} vs {fixture.team_2.team_name}</p>
-              <p>{fixture.scheduled_date}</p>
-            </div>
-          ))}
-        </div>
-      </main>
+        {fixtures?.length && (
+          <div className="flex flex-col px-10">
+            <h1 className="text-2xl font-medium py-6">Upcoming Fixtures</h1>
+            <FixtureList fixtures={fixtures} />
+          </div>
+        )}
+      </main >
     </>
   );
 }
