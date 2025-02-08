@@ -4,6 +4,7 @@ import { encodedRedirect } from "@/utils/utils";
 import { createClient } from "@/utils/supabase/server";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+import { Fixture, Season, TeamWithDetails } from "./types";
 
 export const signUpAction = async (formData: FormData) => {
   const email = formData.get("email")?.toString();
@@ -154,3 +155,40 @@ export const signOutAction = async () => {
   await supabase.auth.signOut();
   return redirect("/sign-in");
 };
+
+export const fetchSeasons = async () => {
+  const supabase = await createClient();
+  const { data: seasonsData } = await supabase
+    .from("season")
+    .select(`*, team_season(*, team(team_name, id)), fixture_week(*, fixtures(*))`)
+    .returns<Season[]>();
+  return seasonsData;
+}
+
+export const fetchFixtures = async (season: number, week: number) => {
+  const supabase = await createClient();
+  const { data: fixturesData } = await supabase
+    .from("fixtures")
+    .select(`*, team_1(team_name, id), team_2(team_name, id), fixture_week!inner(fixture_week, season!inner(year))`)
+    .eq('fixture_week.season.year', season)
+    .eq('fixture_week.fixture_week', week);
+  return fixturesData;
+}
+
+
+export const fetchTeamFixtures = async (teamId: string) => {
+  const supabase = await createClient();
+  const { data: team } = await supabase
+    .from("team")
+    .select(`*, player_team(*, player(*))`)
+    .eq('id', teamId)
+    .single<TeamWithDetails>();
+
+  const { data: fixtures } = await supabase
+    .from("fixtures")
+    .select(`*, team_1(*), team_2(*)`)
+    .or(`team_1.eq.${teamId},team_2.eq.${teamId}`)
+    .returns<Fixture[]>()
+
+  return { ...team, fixtures: fixtures || [] };
+}

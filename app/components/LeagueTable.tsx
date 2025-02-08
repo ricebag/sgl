@@ -1,13 +1,13 @@
 import Link from "next/link";
-import { Team } from "../types";
+import { TeamSeason } from "../types";
 
-const TABLE_HEAD = ["Team Name", "GP", "W", "D", "L", "GF", "GA", "GD", "PTS"];
+const TABLE_HEAD = ["Team Name", "GP", "PTS", "GD"];
 
-export function Table({ teams }: { teams: Team[] }) {
+export function Table({ teams }: { teams: TeamSeason[] }) {
     return (
         <div className="h-full w-full overflow-scroll">
             <table className="w-full min-w-max table-auto text-left">
-                <thead className="bg-gray-400">
+                <thead className="bg-emerald-600">
                     <tr>
                         {TABLE_HEAD.map((head) => (
                             <th
@@ -25,12 +25,12 @@ export function Table({ teams }: { teams: Team[] }) {
                     </tr>
                 </thead>
                 <tbody>
-                    {teams.map(({ id, team_name, games_played, won, drawn, lost, goals_for, goals_against, goal_difference, points }, index) => {
+                    {teams.map(({ team: { team_name, id }, games_played, goal_difference, points }, index) => {
                         const isLast = index === teams.length - 1;
                         const classes = isLast ? "p-4" : "p-4 border-b border-blue-gray-50";
 
                         return (
-                            <tr key={team_name} className={index % 2 === 0 ? "bg-white" : "bg-gray-200"}>
+                            <tr key={team_name} className={index % 2 === 0 ? "bg-white" : "bg-emerald-200"}>
                                 <td className={classes}>
                                     <Link
                                         href={`/team/${id}`}
@@ -45,7 +45,7 @@ export function Table({ teams }: { teams: Team[] }) {
                                         color="blue-gray"
                                         className="font-normal"
                                     >
-                                        {games_played}
+                                        <strong>{games_played}</strong>
                                     </p>
                                 </td>
                                 <td className={classes}>
@@ -53,7 +53,7 @@ export function Table({ teams }: { teams: Team[] }) {
                                         color="blue-gray"
                                         className="font-normal"
                                     >
-                                        {won}
+                                        <strong>{points}</strong>
                                     </p>
                                 </td>
                                 <td className={classes}>
@@ -61,47 +61,7 @@ export function Table({ teams }: { teams: Team[] }) {
                                         color="blue-gray"
                                         className="font-normal"
                                     >
-                                        {drawn}
-                                    </p>
-                                </td>
-                                <td className={classes}>
-                                    <p
-                                        color="blue-gray"
-                                        className="font-normal"
-                                    >
-                                        {lost}
-                                    </p>
-                                </td>
-                                <td className={classes}>
-                                    <p
-                                        color="blue-gray"
-                                        className="font-normal"
-                                    >
-                                        {goals_for}
-                                    </p>
-                                </td>
-                                <td className={classes}>
-                                    <p
-                                        color="blue-gray"
-                                        className="font-normal"
-                                    >
-                                        {goals_against}
-                                    </p>
-                                </td>
-                                <td className={classes}>
-                                    <p
-                                        color="blue-gray"
-                                        className="font-normal"
-                                    >
-                                        {goal_difference}
-                                    </p>
-                                </td>
-                                <td className={classes}>
-                                    <p
-                                        color="blue-gray"
-                                        className="font-normal"
-                                    >
-                                        {points}
+                                        <strong>{goal_difference}</strong>
                                     </p>
                                 </td>
                             </tr>
