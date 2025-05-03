@@ -86,7 +86,7 @@ export default function Home() {
               <h1 className="text-2xl font-medium py-6">Upcoming Fixtures</h1>
 
               <div className="flex items-center">
-                <label className="font-medium mx-2" htmlFor="fixtureWeek">Season</label>
+                <label className="font-medium mx-2" htmlFor="fixtureWeek">Fixture Week</label>
                 <select className="border rounded p-2" id='fixtureWeek' onChange={(e) => setFixtureWeek(parseInt(e.target.value))}>
                   {fixtureWeeks?.map((fw) => (
                     <option key={fw.id} value={fw.fixture_week}>{fw.fixture_week}</option>

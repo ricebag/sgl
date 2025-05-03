@@ -39,7 +39,12 @@ export default function RootLayout({
         >
           <main className="min-h-screen flex flex-col items-center">
             <div className="flex-1 w-full flex flex-col items-center">
-              <nav className="w-full fixed bg-white flex justify-center border-b border-b-foreground/10 h-16 z-10">
+              <nav className="w-full fixed bg-gray-800 text-white flex justify-center border-b border-b-foreground/10 h-16 z-10">
+                <img
+                  className="object-cover w-[50px] h-[50px] self-center"
+                  src='https://xctajhalcbjujvqqdaqo.supabase.co/storage/v1/object/public/team-photos//logo.jpeg'
+                  alt=""
+                />
                 <Link href="/" className="flex justify-between items-center p-3 px-5 text-3xl text-bold">
                   Summer Golf League
                 </Link>
